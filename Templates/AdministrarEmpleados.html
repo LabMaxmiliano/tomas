@@ -1,0 +1,193 @@
+{% extends 'base/base.html'%}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+	{% with messages = get_flashed_messages()%}
+		{%if messages%}
+			
+				{%for message in messages%}
+					<div class="alert alert-success">
+						{{ message }}
+					</div>
+				{%endfor%}
+			
+		{%endif%}
+	{% endwith%}
+
+	{% from "macro.html" import render_field %}
+	
+	
+	
+
+
+
+
+	<div class="container col-lg-6 col-lg-offset-3">
+		<div class="row scroleable">
+        <div class="panel panel-primary">
+            <div class="panel-heading text-center">
+                <h3 class="panel-title">Empleados</h3>
+                <div class="pull-right">
+                </div>
+            </div>
+            <table class="table  tablaEmpleados">
+                <thead>
+                  <tr>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Puesto</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaArticulos">
+                  {%for x in listaEmpleados%}
+					{%if x[4] == "1"%}
+						<tr>
+						<td>{{x[1]}}
+						</td>
+						<td>{{x[2]}}
+						</td>
+						<td>{{x[3]}}
+						</td>
+						<td class = "oculto">{{x[0]}}
+						</td>
+					
+						<td>
+							<button class="btn btn-primary" onclick="modalVerEmpleado('{{x[0]}}', '{{x[1]}}', '{{x[2]}}', '{{x[3]}}', '{{x[4]}}')">Ver</button>
+							<button class="btn btn-warning" onclick="modalEditarEmpleado('{{x[0]}}', '{{x[1]}}', '{{x[2]}}', '{{x[3]}}')">Editar</button>
+							<button class="btn btn-danger" data-toggle="modal" data-target="#modalBorrarEmpleado">Borrar</button>
+						</tr>
+					{%endif%}
+				{%endfor%}
+                </tbody>
+            </table>
+            <div class="botonAgregar text-center">
+               <button class="btn btn-primary botonAgregar" data-toggle="modal" data-target="#modalAgregarEmpleado">Agregar</button>
+            </div>      
+                  <div class="col col-xs-11">
+                    <ul class="pagination pull-right" id="paginas">
+                    </ul>
+                    <ul class="pagination pull-right">
+                    </ul>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    	<div class="row techito">
+			</div><br>
+        <!--Modal que agrega empleados-->
+        <div id="modalAgregarEmpleado" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Agregar empleado</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form horizontal" method="POST">
+					<input type="hidden" name="csrf_token" value="{{csrf_token() }}"/>
+                    <div class="form-group">
+                        {{ render_field(form.nombre, class='form-control') }}
+                        {{ render_field(form.apellido, class='form-control') }}
+                        {{ render_field(form.puesto, class='form-control') }}
+						<p><input type="submit" value="Agregar Empleado"></p>
+                    </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                 <button id="agregarEmpleado" class="btn btn-default">Agregar empleado</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+         <!--Modal para ver-->
+        <div id="modalVerEmpleado" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Informacion del empleado</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form horizontal">
+                    <div class="form-group">
+                        <label for="articulo">Nombre</label>
+                        <input class="form-control" type="text" id="nombreEmpleadoVer"><br>
+                        <label for="stock">Apellido</label>
+                        <input class="form-control" id="apellidoEmpleadoVer" type="text"><br>
+                        <label for="marca" >Puesto</label>
+                        <input id="puestoEmpleadoVer" class="form-control" type="text"><br>
+                    </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Modal que edita empleados-->
+        <div id="modalEditarEmpleado" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Editar empleado</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form horizontal" method="POST">
+                    <div class="form-group">
+					<input type="hidden" name="csrf_token" value="{{csrf_token() }}"/>
+
+                      <!-- CAMPO OCULTO PARA PONER EL ID-->
+                        
+
+                        {{ render_field(form.nombreEditar, class='form-control') }}
+                        {{ render_field(form.apellidoEditar, class='form-control') }}
+                        {{ render_field(form.puestoEditar, class='form-control') }}
+						{{ render_field(form.idEditar, class='form-control') }}
+						
+                    </div>
+					
+					<p><input type="submit" value="Agregar Empleado"></p>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button id="agregarAVenta" class="btn btn-default">Guardar cambios</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- MODAL QUE ELIMINA EL EMPLEADO DE SU EXISTENCIA MORTAL Y ETERNA TAMBIEN (CUIDADO)-->
+          <div id="modalBorrarEmpleado" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+              </div>
+              <div class="modal-body alert-danger">
+                <h3>Desea borrar este empleado para siempre?</h3>
+                <form class="form horizontal"  method="POST">
+                  <!--TOMAS NIESI ACA TENES OTRO INPUT OCULTO PARA QUE MANEJES EL ID-->
+                    <div class="form-group">
+                        <input type="number" class="oculto"  id="idEmpleadoBorrar">
+                    </div>
+              </div>
+              <div class="modal-footer">
+                <button id="agregarAVenta" class="btn btn-danger">Borrar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+              </div>
+                </form>
+            </div>
+          </div>
+        </div>
+		</div>
+		</div>
+</div>
+	</div>
+					
+{% endblock %}

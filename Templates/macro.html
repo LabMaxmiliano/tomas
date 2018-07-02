@@ -1,4 +1,12 @@
 {% macro render_field(field) %} <!– va a tener de parametro un campo (osea los atributos de la clase de forms) –>
 	<td> {{ field.label }} <!– vamos a renderisar campo vamos a mostrar el label –>
 	<dd> {{ field(**kwargs)|safe }}<!–aca mostramos el campo con **kwargs le estamos pasando un diccionario de argumentos y con el |safe lo muestra como html –>
+	{%if field.errors%}
+	<ul>
+		{%for error in field.errors%}
+		<li>{{error}}</li>
+		{%endfor%}
+	</ul>
+	{%endif%}
 {% endmacro %}
+

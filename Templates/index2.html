@@ -8,9 +8,6 @@
 	
 	
 	<form name="sentMessage" id="contactForm" method="POST">
-		{{ render_field(form.usuario) }}
-		{{ render_field(form.email) }}
-		<p><input type="submit" value="Enviar datos"></p>
 		
 	</form>
 	<div class="container">
@@ -20,26 +17,32 @@
 				  <div class="panel-body">
 				    <h3 class="text-center">Login</h3>
 
-					<form method = "post" action="indexfasfas.php">
-
-					{{ render_field(form.usuario) }}
-					{{ render_field(form.email) }}
+					<form method = "post" >
+					<input type="hidden" name="csrf_token" value="{{csrf_token() }}"/>
+					<div class="row control-group">
+						<div class="form_group col-xs-12 floating-label-form-group controls">
+							{{ render_field(form.usuario, class='form-control') }}
+						   <p class="help-blocl text-danger"></p>
+						</div>
+					</div>
+					<div class="row control-group">
+						<div class="form_group col-xs-12 floating-label-form-group controls">
+							{{ render_field(form.password, class='form-control') }}
+							<p class="help-blocl text-danger"></p>
+						</div>
+					</div>
+					
+					
+					{{form.honeypot}}
 					<p><input type="submit" value="Enviar datos"></p>
 
 					<br>
 
-					<input type="submit" id="botonSubmit" class="btn btn-primary btn-block" value="Ingresar" name="submit">
-					</button>
-					
-					
 					</form>
 
 					</div>
+					
 				</div>
-					<div id="errores">
-						<span class="hidden text-danger" id="errorUsuario" >El usuario solo debe contener letras, numeros y guiones bajos.</span>
-						<span class="hidden text-danger" id="errorContrasenia">Contraseña sin formato valido.</span>
-					</div>
 			</section>
 		</div>
 	</div>

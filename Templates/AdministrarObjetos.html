@@ -1,0 +1,180 @@
+{% extends 'base/base.html'%}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+	{% with messages = get_flashed_messages()%}
+		{%if messages%}
+			
+				{%for message in messages%}
+					<div class="alert alert-success">
+						{{ message }}
+					</div>
+				{%endfor%}
+			
+		{%endif%}
+	{% endwith%}
+
+	{% from "macro.html" import render_field %}
+	
+	<div class="container col-lg-6 col-lg-offset-3">
+		<div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading text-center">
+                <h3 class="panel-title">Objetos</h3>
+                <div class="pull-right">
+                </div>
+            </div>
+            <table class="table table-responsive table-condensed">
+                <thead>
+                  <tr>
+                  <th>Nombre</th>
+                  <th>Propietario</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaObjetos">
+                  <tr>
+                  <td>Celular</td>
+                  <td>Juanco</td> 
+                  <td class="oculto">id</td>
+                  <td>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalVerObjeto">Ver</button>
+                    <button class="btn btn-warning" data-toggle="modal" data-target ="#modalEditarObjeto">Editar</button>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#modalBorrarObjeto">Borrar</button>
+                  </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="botonAgregar text-center">
+               <button class="btn btn-primary botonAgregar" data-toggle="modal" data-target="#modalAgregarObjeto">Agregar</button>
+            </div>      
+                  <div class="col col-xs-11">
+                    <ul class="pagination pull-right" id="paginas">
+                    </ul>
+                    <ul class="pagination pull-right">
+                    </ul>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    	<div class="row techito">
+			</div><br>
+        <!--Modal que agrega objetoss-->
+        <div id="modalAgregarObjeto" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Agregar objeto</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form horizontal">
+                    <div class="form-group">
+                        <label for="articulo">Nombre</label>
+                        <input class="form-control" type="text" id="nombreObjetoAgregar"><br>
+                        <label for="stock">Descripcion</label>
+                        <textarea class="form-control" rows="5" id="descripcionObjetoAgregar"></textarea>
+                        <label for="marca" >Dueño</label>
+                        <select id="propietarioObjetoAgregar" class="form-control">
+                          <option>ELCHABITO</option>
+                        </select><br>
+                    </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                 <button id="botonAgregarObjeto" class="btn btn-default">Agregar objeto</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+         <!--Modal para ver objeto-->
+        <div id="modalVerObjeto" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Informacion del objeto</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form horizontal">
+                    <div class="form-group">
+                        <label for="articulo">Nombre</label>
+                        <input class="form-control" type="text" id="nombreObjetoVer"><br>
+                        <label for="stock">Descripcion</label>
+                        <textarea class="form-control" rows="5" id="descripcionObjetoVer"></textarea><br>
+                        <label for="marca" >Propietario</label>
+                        <input id="propietarioObjetoVer" class="form-control" type="text"><br>
+                    </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Modal que edita objetos-->
+        <div id="modalEditarObjeto" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Editar objeto</h4>
+              </div>
+              <div class="modal-body">
+                <p>Edite el objeto</p>
+                <form class="form horizontal" method="POST">
+                    <div class="form-group">
+
+                      <!-- CAMPO OCULTO PARA PONER EL ID-->
+                        <input type="number" class="oculto" name="idObjeto" id="idObjetoModificar">
+
+                        <label for="articulo">Nombre</label>
+                        <input class="form-control" type="text" id="nombreObjetoModificar"><br>
+                        <label for="stock">Descripcion</label>
+                        <textarea class="form-control" rows="5" id="descripcionObjetoModificar"></textarea><br>
+                        <label for="marca" >Propietario</label>
+                        <input id="propietarioObjetoModificar" class="form-control" type="text"><br>
+
+                    </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button id="botonGuardarObjetoModificar" class="btn btn-default">Guardar cambios</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- MODAL QUE ELIMINA EL OBJETO DE SU EXISTENCIA MORTAL Y ETERNA TAMBIEN (CUIDADO)-->
+          <div id="modalBorrarObjeto" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+              </div>
+              <div class="modal-body alert-danger">
+                <h3>Desea borrar este objeto para siempre?</h3>
+                <form class="form horizontal"  method="POST">
+                  <!--TOMAS NIESI ACA TENES OTRO INPUT OCULTO PARA QUE MANEJES EL ID-->
+                    <div class="form-group">
+                        <input type="number" class="oculto"  id="idObjetoBorrar">
+                    </div>
+              </div>
+              <div class="modal-footer">
+                <button id="botonBorrarObjeto" class="btn btn-danger">Borrar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+              </div>
+                </form>
+            </div>
+          </div>
+        </div>
+		</div>
+		</div>
+</div>
+	</div>
+					
+{% endblock %}
