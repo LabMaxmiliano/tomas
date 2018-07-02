@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="js/jquery-3.2.1.js"></script>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<script type="text/javascript" src="js/scriptsInicio.js"></script>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/Estilos.css') }}">
+	<title>Ingresando</title>
+	
+
+
+	<style>
+		
+	.top{
+		margin-top: 30%;
+	}
+
+	.caja{
+		border-radius: 5px;
+	}
+
+	</style>
+
+</head>
+<body>
+
+	<nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+
+          <a class="navbar-brand" href="#">Distribuidora Niveat</a>
+
+      </div>
+    </nav>
+
+
+	<div class="container">
+		<div class="col-md-4 col-md-offset-4">
+			<section>
+				<div class="panel panel-default top caja">
+				  <div class="panel-body">
+				    <h3 class="text-center">Login</h3>
+
+					<form method = "post" action="indexfasfas.php">
+
+					<div class="input-group input-group-lg">
+					  <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
+					  <input type="text" name="usuario" id="usuario" class="form-control" placeholder="Usuario" aria-describedby="sizing-addon1" required>
+					</div>
+					<br>
+
+					<div class="input-group input-group-lg">
+					  <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock" aria-hidden="true"></i></span>
+					  <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" aria-describedby="sizing-addon1" required>
+					</div>
+
+					<br>
+
+					<input type="submit" id="botonSubmit" class="btn btn-primary btn-block" value="Ingresar" name="submit">
+					</button>
+					
+					
+					</form>
+
+					</div>
+				</div>
+					<div id="errores">
+						<span class="hidden text-danger" id="errorUsuario" >El usuario solo debe contener letras, numeros y guiones bajos.</span>
+						<span class="hidden text-danger" id="errorContrasenia">Contraseña sin formato valido.</span>
+					</div>
+					<?php if (!empty($message)) {echo "<p class=text-danger \"color\" >" . "* ". $message . "</p>";} ?>
+			</section>
+		</div>
+	</div>
+
+<!--
+
+<div class="container">
+	<div class="col-md-4 col-md-offset-4">
+		<section>
+			<div class="panel panel-default top caja">
+			  <div class="panel-body">
+			    <h3 class="text-center">Admin Login</h3>
+			    
+			    <form>
+			    	<div class="input-group input-group-lg">
+					  <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
+					  <input type="email" name="email" id="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon1" required>
+					</div>
+					<br>
+					<div class="input-group input-group-lg">
+					  <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-key" aria-hidden="true"></i></span>
+					  <input type="password" name="password" id="password" class="form-control" placeholder="Password" aria-describedby="sizing-addon1" required>
+					</div>
+					<br>
+					 <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+
+			    </form>
+			  </div>
+			</div>
+		</section>
+	</div>
+</div>
+
+-->
+	
+
+
+</body>
+</html>

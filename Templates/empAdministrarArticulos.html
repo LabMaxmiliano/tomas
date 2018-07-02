@@ -1,0 +1,237 @@
+<?php
+session_start();
+?>
+<?php
+
+  /*
+  $dbidrol = $_SESSION["‘idrol’"];
+  if ($dbidrol != 2)
+  {
+    echo "asfasdfasfsdf";
+    header('Location: AccesoDenegado.html');
+    die();
+    
+  } 
+  */ 
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="js/jquery-3.2.1.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/estilos.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<script type="text/javascript" src="js/supAdministrarArticulos.js"></script>
+	<title>Administrar productos</title>
+</head>
+<body>
+
+
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Distribuidora Niveat</a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          </div>
+          
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav pull-right">
+              <li class="active">
+                <a href="empAdministrarArticulos.php">Articulos</a>
+              </li>
+
+              <li>
+                <a href="empAdministrarProveedores.php">Proveedores</a>
+              </li>
+
+              <li>
+                <a href="empAdministrarVendedores.php">Vendedores</a>
+              </li>
+
+              <a href="salir.html">
+                <button class="btn btn-danger navbar-btn" class="active">Cerrar sesion</button>
+              </a>
+            </ul>
+          </div>
+
+        </div>
+    </nav>
+
+
+
+
+	<div class="container-fluid col-lg-10 col-lg-offset-1">
+		<div class="row">
+        <div class="panel panel-primary filterable">
+            <div class="panel-heading text-center">
+                <h3 class="panel-title">Articulos</h3>
+                <div class="pull-right">
+                </div>
+            </div>
+            <table class="table tablaSeleccionable">
+                <thead>
+                    <tr class="filters">
+                         <th><button class="btn btn-success center-block btn-filter" id="buscador">Filtrar</button></th>
+                        <th><input type="text" class="form-control" id="codigo" placeholder="Codigo" disabled></th>
+                        <th><input type="text" class="form-control" id="nombre" placeholder="Nombre" disabled></th>
+                        <th><input type="text" class="form-control" id="categoria" placeholder="Categoria" disabled></th>
+                        <th><input type="text" class="form-control" id="marca" placeholder="Marca" disabled></th>
+                        <th><input type="text" class="form-control" id="proveedor" placeholder="Proveedor" disabled></th>
+                        <th><input type="text" class="form-control" id="stock" placeholder="Stock" disabled></th>
+                    </tr>
+                </thead>
+                <tbody id="tablaArticulos">
+                    </tr>
+                </tbody>
+            </table>
+             <div class="panel-footer">
+                <div class="row">
+                  <div class="col col-xs-1 pagination">
+                            <button class="btn btn-success btn-sm glyphicon glyphicon-plus center-block" data-toggle="modal" data-target="#modalAgregarArticulo" id="btnAgregarUsuario" value="agregarProveedor"></button>
+                  </div>
+                  <div class="col col-xs-11">
+                    <ul class="pagination pull-right" id="paginas">
+                    </ul>
+                    <ul class="pagination pull-right">
+                    </ul>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    	<div class="row techito">
+			</div><br>
+        <!--Modal que agrega articulos-->
+        <div id="modalAgregarArticulo" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Agregar articulo</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form horizontal" onsubmit="validarArticulos(event)" action="insertArticulos.php" method="POST">
+                    <div class="form-group">
+
+                        <label for="articulo">Nombre del articulo</label>
+                        <input class="form-control" type="text" id="nombreArt" name="nombre"><br>
+
+                        <label for="stock">Stock inicial</label>
+                        <input class="form-control" id="stockInicial" type="number" name="stock"><br>
+
+                        <label for="marca" >Marca</label>
+                        <input id="marcaArt" name="marca" class="form-control" type="text"><br>
+
+                        <label for="categoria">Categoria</label>
+                        <select class="form-control" id="comboAltaCategoria" name="categoria">
+                            
+                        </select><br>
+                        <label for="proveedor">Proveedor</label>
+                        <select class="form-control" id= "comboAltaProveedor" name="proveedor">
+                            
+                        </select><br>
+
+                        <button id="agregarAVenta">Agregar al inventario</button>
+                    </div>
+                </form>
+                <!-- //////////////////////////// A PARTIR DE ACA LE AGREGO CODIGO  ////////////////////////////// -->
+                <div id="erroresAlta">
+                  <span class="bg-danger errorForm hidden" id="errorAltaNombre">El nombre debe contener de 4 a 25 caracteres, solo letras, espacios y numeros.</span>
+                  <span class="bg-danger errorForm hidden" id="errorAltaStock">El stock inicial debe ser mayor a 1 y no debe contener puntos.</span>
+                  <span class="bg-danger errorForm hidden" id="errorAltaMarca">La marca debe contener de 4 a 25 caracteres, solo letras, espacios y numeros.</span>
+
+                </div>
+                <!-- //////////////////////////// HASTA ACA LE AGREGUE A ////////////////////////////// -->
+
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Modal que edita articulos-->
+        <div id="modalEditarArticulo" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Editar articulo</h4>
+              </div>
+              <div class="modal-body">
+                <p>Edite el articulo seleccionado</p>
+                <form class="form horizontal" onsubmit="validarArticulosModificacion(event)" action="modificarArticulos.php" method="POST">
+                    <div class="form-group">
+                        <input type="number" class="oculto" name="idArticulo" id="idArticulo">
+
+                        <label for="articulo">Nombre del articulo</label>
+                        <input class="form-control" type="text" name="articulo" id="nombreArticulo"><br>
+
+                        <label for="stock">Stock actual</label>
+                        <input class="form-control" type="number" name="stock" id="stockArticulo" ><br>
+
+                        <label for="marca">Marca</label>
+                        <input class="form-control" name="marca" id="marcaArticulo"><br>
+                        
+                        <label for="categoria">Categoria</label>
+                        <select class="form-control" name="categoria" id="comboModificarCategoria">
+                        </select><br>
+
+                        <label for="proveedor">Proveedor</label>
+                        <select class="form-control" name="proveedor" id="comboModificacionProveedor">
+
+                        </select><br>
+                        <button id="agregarAVenta">Guardar cambios</button>
+                    </div>
+                </form>
+                <!-- //////////////////////////// A PARTIR DE ACA LE AGREGO CODIGO ////////////////////////////// -->
+                <div id="erroresModificacion">
+                  <span class="bg-danger errorForm hidden" id="errorModificacionNombre">El nombre debe contener de 4 a 25 caracteres, solo letras, espacios y numeros.</span>
+                  <span class="bg-danger errorForm hidden" id="errorModificacionStock">El stock inicial debe ser mayor a 1 y no debe contener puntos.</span>
+                  <span class="bg-danger errorForm hidden" id="errorModificacionMarca">La marca debe contener de 4 a 25 caracteres, solo letras, espacios y numeros.</span>
+
+                </div>
+                <!-- //////////////////////////// HASTA ACA LE AGREGUE CODIGO ////////////////////////////// -->                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+          <div id="modalBorrarArticulo" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+              </div>
+              <div class="modal-body alert-danger">
+                <h3>Desea borrar este articulo para siempre?</h3>
+                <form class="form horizontal" action="borrarArticulos.php" method="POST">
+                    <div class="form-group">
+                        <input type="number" class="oculto" name="ID_ART" id="ID_ART">
+                    </div>
+              </div>
+              <div class="modal-footer">
+                <button id="agregarAVenta" class="btn btn-danger">Borrar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+              </div>
+                </form>
+            </div>
+          </div>
+        </div>
+		</div>
+		</div>
+</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{% extends 'base/base.html'%}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+
+	{% from "macro.html" import render_field %}
+	
+	
+	<form name="sentMessage" id="contactForm" method="POST">
+		{{ render_field(form.usuario) }}
+		{{ render_field(form.email) }}
+		<p><input type="submit" value="Enviar datos"></p>
+		
+	</form>
+	<div class="container">
+		<div class="col-md-4 col-md-offset-4">
+			<section>
+				<div class="panel panel-default top caja">
+				  <div class="panel-body">
+				    <h3 class="text-center">Login</h3>
+
+					<form method = "post" action="indexfasfas.php">
+
+					{{ render_field(form.usuario) }}
+					{{ render_field(form.email) }}
+					<p><input type="submit" value="Enviar datos"></p>
+
+					<br>
+
+					<input type="submit" id="botonSubmit" class="btn btn-primary btn-block" value="Ingresar" name="submit">
+					</button>
+					
+					
+					</form>
+
+					</div>
+				</div>
+					<div id="errores">
+						<span class="hidden text-danger" id="errorUsuario" >El usuario solo debe contener letras, numeros y guiones bajos.</span>
+						<span class="hidden text-danger" id="errorContrasenia">Contraseña sin formato valido.</span>
+					</div>
+			</section>
+		</div>
+	</div>
+					
+{% endblock %}
